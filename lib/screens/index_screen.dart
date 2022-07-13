@@ -1,4 +1,4 @@
-import 'package:bookting/tabs/tabs_list.dart';
+import 'package:bookting/tabs/tabs_favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:bookting/tabs/tabs_home.dart';
 import 'package:bookting/tabs/tabs_map.dart';
@@ -13,7 +13,7 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
-    ListTab(),
+    FavoriteTab(),
     SearchTab(),
     HomeTab(),
     MapTap(),

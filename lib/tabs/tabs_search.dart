@@ -5,7 +5,7 @@ class SearchTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('홈 화면입니다!'),
+        title: Text('찾기 화면입니다!'),
       ),
       body: Container(
         child: Column(

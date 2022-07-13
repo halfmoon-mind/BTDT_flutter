@@ -1,8 +1,13 @@
-import 'package:bookting/screens/main_screen.dart';
+import 'package:bookting/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:bookting/screens/screen_index.dart';
+import 'package:bookting/screens/index_screen.dart';
+import 'package:bookting/screens/login_screen.dart';
+import 'package:bookting/screens/register_screen.dart';
+import 'package:bookting/screens/search_screen.dart';
+import 'package:bookting/screens/detail_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -15,9 +20,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
+        '/': (context) => SplashScreen(),
+        '/login': (context) => LoginScreen(),
         '/index': (context) => IndexScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/search': (context) => SearchScreen(),
+        '/detail': (context) => DetailScreen(),
       },
-      initialRoute: '/index',
+      initialRoute: '/',
     );
   }
 }

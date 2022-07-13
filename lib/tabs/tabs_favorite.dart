@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ListTab extends StatelessWidget {
+class FavoriteTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('홈 화면입니다!'),
+        title: Text('즐겨찾기 화면입니다!'),
       ),
       body: Container(
         child: Column(
