@@ -8,11 +8,8 @@ class MapTap extends StatelessWidget {
         title: Text('맵화면입니다!'),
       ),
       body: Container(
-        child: Column(
-          children: [
-            Text('안녕하세요'),
-            Text('반가워요'),
-          ],
+        child: Center(
+          child: Text('맵 화면'),
         ),
       ),
     );

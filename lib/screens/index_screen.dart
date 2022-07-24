@@ -11,7 +11,7 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   final List<Widget> _tabs = [
     FavoriteTab(),
     SearchTab(),
@@ -22,7 +22,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         iconSize: 35,

@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bookting/providers/user_id.dart';
+
+String email = '';
+String password = '';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -29,7 +36,9 @@ class EmailInput extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: TextField(
-        onChanged: (email) {},
+        onChanged: (value) {
+          email = value;
+        },
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: '이메일',
@@ -46,7 +55,9 @@ class PasswordInput extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: TextField(
-        onChanged: (password) {},
+        onChanged: (value) {
+          password = value;
+        },
         obscureText: true,
         decoration: InputDecoration(
           labelText: '비밀번호',
@@ -58,6 +69,12 @@ class PasswordInput extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
+  Future setLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLogin', true);
+    print('[*] 로그인 상태 : ' + prefs.getBool('isLogin').toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,8 +86,22 @@ class LoginButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
           ),
         ),
-        onPressed: () {
-          Navigator.of(context).pushReplacementNamed('/index');
+        onPressed: () async {
+          try {
+            await FirebaseAuth.instance
+                .signInWithEmailAndPassword(email: email, password: password);
+            await setLogin();
+            context.read<UserId>().changeUser(email);
+            Navigator.of(context).pushReplacementNamed('/index');
+          } on FirebaseAuthException catch (e) {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text("로그인 실패!"),
+                content: Text('${e.message}'),
+              ),
+            );
+          }
         },
         child: Text('로그인'),
       ),
