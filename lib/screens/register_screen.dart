@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../component/background_blur.dart';
+
 String email = "";
 String password = "";
 String name = "";
@@ -14,27 +16,65 @@ String password_check = "";
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('회원 가입'),
-      ),
-      body: ListView(
-        children: [
-          EmailInput(),
-          NameInput(),
-          IdInput(),
-          PhoneInput(),
-          BankLocInput(),
-          BankInput(),
-          PasswordInput(),
-          PasswordCheckInput(),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(thickness: 1),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(top: statusBarHeight),
+          width: MediaQuery.of(context).size.width,
+          decoration: background(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(padding: EdgeInsets.all(15)),
+              Text(
+                '회원가입',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              Opacity(
+                opacity: 0.8,
+                child: Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height * 1,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        EmailInput(),
+                        NameInput(),
+                        IdInput(),
+                        PhoneInput(),
+                        BankLocInput(),
+                        BankInput(),
+                        PasswordInput(),
+                        PasswordCheckInput(),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Divider(thickness: 1),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              child: RegisterButton(),
+                              width: MediaQuery.of(context).size.width * 0.4,
+                            ),
+                            SizedBox(
+                              child: Cancel(),
+                              width: MediaQuery.of(context).size.width * 0.4,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          RegisterButton(),
-          Padding(padding: EdgeInsets.all(5)),
-        ],
+        ),
       ),
     );
   }
@@ -52,7 +92,7 @@ class EmailInput extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: '이메일',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -70,7 +110,7 @@ class NameInput extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: '이름',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -89,7 +129,7 @@ class IdInput extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: '학번 입력',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -142,7 +182,7 @@ class BankInput extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: '계좌 입력',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -160,7 +200,7 @@ class PhoneInput extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: '전화번호',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -179,7 +219,7 @@ class PasswordInput extends StatelessWidget {
         obscureText: true,
         decoration: InputDecoration(
           labelText: '비밀번호',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -198,7 +238,7 @@ class PasswordCheckInput extends StatelessWidget {
         obscureText: true,
         decoration: InputDecoration(
           labelText: '비밀번호 확인',
-          helperText: '',
+          border: InputBorder.none,
         ),
       ),
     );
@@ -261,15 +301,17 @@ class RegisterButton extends StatelessWidget {
 
             CollectionReference users =
                 FirebaseFirestore.instance.collection('user');
-            users.add(({
-              'uid': userCredential.user!.uid,
-              'email': email,
-              'id': id,
-              'bank_loc': bank_loc,
-              'bank_data': bank_data,
-              'name': name,
-              'phone': phone,
-            }));
+            users.doc(email).set(({
+                  'uid': userCredential.user!.uid,
+                  'email': email,
+                  'id': id,
+                  'bank_loc': bank_loc,
+                  'bank_data': bank_data,
+                  'name': name,
+                  'phone': phone,
+                  'lend': [],
+                }));
+            // userCredential.user!.uid
             Navigator.of(context).pop();
             print('성공!');
           } on FirebaseAuthException catch (e) {
@@ -278,7 +320,23 @@ class RegisterButton extends StatelessWidget {
         }
       },
       child: Text(
-        '회원가입하기!',
+        '완료',
+        style: TextStyle(color: theme.primaryColor),
+      ),
+    );
+  }
+}
+
+class Cancel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: Text(
+        '취소',
         style: TextStyle(color: theme.primaryColor),
       ),
     );

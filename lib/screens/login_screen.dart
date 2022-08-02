@@ -4,27 +4,42 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bookting/providers/user_id.dart';
 
+import '../component/background_blur.dart';
+
 String email = '';
 String password = '';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('로그인 화면'),
-      ),
-      body: Column(
-        children: [
-          EmailInput(),
-          PasswordInput(),
-          LoginButton(),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(thickness: 1),
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.only(top: statusBarHeight),
+          decoration: background(),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Column(
+              children: [
+                Image.asset('assets/Login_Title.jpg'),
+                EmailInput(),
+                Padding(padding: EdgeInsets.all(8.0)),
+                PasswordInput(),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                LoginButton(),
+                Padding(
+                  padding: EdgeInsets.all(4.0),
+                ),
+                RegisterButton(),
+              ],
+            ),
           ),
-          RegisterButton(),
-        ],
+        ),
       ),
     );
   }
@@ -33,16 +48,21 @@ class LoginScreen extends StatelessWidget {
 class EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-      child: TextField(
-        onChanged: (value) {
-          email = value;
-        },
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          labelText: '이메일',
-          helperText: '',
+    return Opacity(
+      opacity: 0.9,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        color: Colors.white,
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: TextField(
+          onChanged: (value) {
+            email = value;
+          },
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: '  ID(이메일)',
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
@@ -52,16 +72,21 @@ class EmailInput extends StatelessWidget {
 class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-      child: TextField(
-        onChanged: (value) {
-          password = value;
-        },
-        obscureText: true,
-        decoration: InputDecoration(
-          labelText: '비밀번호',
-          helperText: '',
+    return Opacity(
+      opacity: 0.9,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        color: Colors.white,
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: TextField(
+          onChanged: (value) {
+            password = value;
+          },
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: '  password',
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
@@ -69,29 +94,26 @@ class PasswordInput extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  Future setLogin() async {
+  Future setLogin(UID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLogin', true);
+    prefs.setString('UID', UID);
     print('[*] 로그인 상태 : ' + prefs.getBool('isLogin').toString());
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.85,
-      height: MediaQuery.of(context).size.height * 0.05,
+      width: MediaQuery.of(context).size.width * 0.8,
+      // height: MediaQuery.of(context).size.height * 0.05,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-        ),
         onPressed: () async {
           try {
             await FirebaseAuth.instance
                 .signInWithEmailAndPassword(email: email, password: password);
-            await setLogin();
-            context.read<UserId>().changeUser(email);
+            final User user = FirebaseAuth.instance.currentUser!;
+            final UID = user.uid;
+            await setLogin(UID);
             Navigator.of(context).pushReplacementNamed('/index');
           } on FirebaseAuthException catch (e) {
             showDialog(
@@ -103,7 +125,7 @@ class LoginButton extends StatelessWidget {
             );
           }
         },
-        child: Text('로그인'),
+        child: Text('LOGIN'),
       ),
     );
   }
@@ -118,8 +140,11 @@ class RegisterButton extends StatelessWidget {
         Navigator.of(context).pushNamed('/register');
       },
       child: Text(
-        '이메일로 회원가입',
-        style: TextStyle(color: theme.primaryColor),
+        '회원가입',
+        style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline),
       ),
     );
   }

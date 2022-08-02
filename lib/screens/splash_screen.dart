@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -39,26 +38,14 @@ class _SplashScreen extends State<SplashScreen> {
     return Scaffold(
       appBar: null,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          primary: false,
           children: [
-            Image.asset('assets/DataTon_icon.png'),
-            Padding(padding: EdgeInsets.all(10)),
-            AnimatedTextKit(
-              repeatForever: true,
-              animatedTexts: [
-                TypewriterAnimatedText(
-                  '당신과 함께하는 북팅...!',
-                  textStyle: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.blue,
-                  ),
-                  speed: Duration(milliseconds: 100),
-                ),
-              ],
-            ),
+            Image.asset(
+              'assets/Splash.png',
+              width: MediaQuery.of(context).size.width,
+            )
           ],
         ),
       ),
