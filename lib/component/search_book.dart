@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bookting/model/lib_book.dart';
 
-SearchBook(List<Map<String, String>> data) {
-  List<Widget> BookList = [];
-  if (data.length == 0) {
-    BookList.add(Container(child: Text('찾은 데이터가 없습니다!')));
-  } else {
-    for (int i = 0; i < data.length; i++) {
-      BookList.add(
-        Container(
-          color: Colors.black12,
-          height: 100,
-          margin: EdgeInsets.all(1),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Image.network(data[i]['url'].toString()),
-              ),
-              Column(
+class SearchResult extends StatefulWidget {
+  const SearchResult({Key? key, required this.queryData}) : super(key: key);
+  final String queryData;
+  @override
+  _SearchResult createState() => _SearchResult();
+}
+
+result() {}
+
+getList(List<LIB_BOOK> lib_book) {
+  return Container();
+}
+
+class _SearchResult extends State<SearchResult> {
+  Future<List<LIB_BOOK>> queryString(String queryData) => FirebaseFirestore
+      .instance
+      .collection('lib_book')
+      .where('TITLE'.contains(queryData))
+      .get()
+      .then((snapshot) =>
+          snapshot.docs.map((doc) => LIB_BOOK.fromJson(doc.data())).toList());
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<LIB_BOOK>>(
+        future: queryString(widget.queryData),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final books = snapshot.data!;
+            return SingleChildScrollView(
+              child: Column(
+                children: getList(books),
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data[i]['title'].toString(),
-                      style: TextStyle(fontSize: 20)),
-                  Text(data[i]['writer'].toString(),
-                      style: TextStyle(fontSize: 14)),
-                  Text('ISBN : ' + data[i]['isbn'].toString(),
-                      style: TextStyle(fontSize: 14)),
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-    }
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('데이터가 존재하지 않습니다!'),
+            );
+          }
+        });
+    // SingleChildScrollView(child: Expanded(child: result()));
   }
-
-  return BookList;
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import '../component/data.dart';
 
 class ProfileTab extends StatelessWidget {
   Future setLogout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLogin', true);
+    prefs.setBool('isLogin', false);
     prefs.setString('UID', '');
     print('[*] 로그인 상태 : ' + prefs.getBool('isLogin').toString());
   }

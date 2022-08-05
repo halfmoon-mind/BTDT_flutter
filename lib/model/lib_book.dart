@@ -1,47 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
-  late String? uid;
-  late String? email;
-  late String? id;
-  late String? bank_loc;
-  late String? bank_data;
-  late String? name;
-  late String? phone;
-  late List? lend;
+class LIB_BOOK {
+  late String? BIBLIO;
+  late String? LOC;
+  late String? NUM;
+  late String? PUBLISHER;
+  late String? TITLE;
+  late String? WRITER;
+  late String? URL;
 
-  User({
-    this.uid,
-    this.email,
-    this.id,
-    this.bank_loc,
-    this.bank_data,
-    this.name,
-    this.phone,
-    this.lend,
+  LIB_BOOK({
+    this.BIBLIO,
+    this.LOC,
+    this.NUM,
+    this.PUBLISHER,
+    this.TITLE,
+    this.WRITER,
+    this.URL,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'uid': uid,
-      'email': email,
-      'id': id,
-      'bank_loc': bank_loc,
-      'bank_data': bank_data,
-      'name': name,
-      'phone': phone,
-      'lend': lend,
+      'BIBLO': BIBLIO,
+      'LOC': LOC,
+      'NUM': NUM,
+      'PUBLISHER': PUBLISHER,
+      'TITLE': TITLE,
+      'WRITER': WRITER,
+      'URL': URL,
     };
   }
 
-  static User fromJson(Map<String, dynamic> json) => User(
-        uid: json['uid'],
-        email: json['email'],
-        id: json['id'],
-        bank_loc: json['bank_loc'],
-        bank_data: json['bank_data'],
-        name: json['name'],
-        phone: json['phone'],
-        lend: json['lend'],
+  static LIB_BOOK fromJson(Map<String, dynamic> json) => LIB_BOOK(
+        BIBLIO: json['BIBLIO'],
+        LOC: json['LOC'],
+        NUM: json['NUM'],
+        PUBLISHER: json['PUBLISHER'],
+        TITLE: json['TITLE'],
+        WRITER: json['WRITER'],
+        URL: json['URL'],
       );
 }

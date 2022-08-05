@@ -5,14 +5,22 @@ import 'package:bookting/tabs/tabs_map.dart';
 import 'package:bookting/tabs/tabs_profile.dart';
 import 'package:bookting/tabs/tabs_search.dart';
 
+import 'package:bookting/screens/detail_screen.dart';
+import 'package:bookting/model/lib_book.dart';
+
 class IndexScreen extends StatefulWidget {
   @override
   _IndexScreenState createState() => _IndexScreenState();
 }
 
+// LIB_BOOK
+
+// const data = LIB_BOOK().toJson();
+
 class _IndexScreenState extends State<IndexScreen> {
   int _currentIndex = 2;
   final List<Widget> _tabs = [
+    // DetailScreen(data),
     FavoriteTab(),
     SearchTab(),
     HomeTab(),
