@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:bookting/screens/index_screen.dart';
 import 'package:bookting/screens/login_screen.dart';
 import 'package:bookting/screens/register_screen.dart';
+import 'package:bookting/tabs/tabs_map.dart';
+import 'package:bookting/component/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/index': (context) => IndexScreen(),
         '/register': (context) => RegisterScreen(),
+        '/maps': (context) => MapTap(),
+        '/camera': (context) => UseCamera(),
       },
       initialRoute: '/',
     );

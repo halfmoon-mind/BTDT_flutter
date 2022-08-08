@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:bookting/model/lib_book.dart';
+import 'package:bookting/model/lend_book.dart';
+
+const double textWidth = 140;
 
 class DetailScreen extends StatelessWidget {
   DetailScreen(this.data);
-  final LIB_BOOK data;
+  final LEND_BOOK data;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,11 +60,26 @@ class DetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(padding: EdgeInsets.all(15)),
+            const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: [
                 const SizedBox(
-                  width: 70,
+                  width: textWidth,
+                  child: Text(
+                    '해당 도서 대여 횟수',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                Text(
+                  '${data.LEND_CNT}',
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: textWidth,
                   child: Text(
                     'BIBLO ID',
                     style: TextStyle(fontSize: 15),
@@ -76,14 +94,14 @@ class DetailScreen extends StatelessWidget {
             Row(
               children: [
                 const SizedBox(
-                  width: 70,
+                  width: textWidth,
                   child: Text(
                     '재고량',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 Text(
-                  '${data.NUM}개 (도서관)',
+                  '${data.NUM}개 (서점)',
                   style: const TextStyle(fontSize: 15),
                 ),
               ],
@@ -91,7 +109,37 @@ class DetailScreen extends StatelessWidget {
             Row(
               children: [
                 const SizedBox(
-                  width: 70,
+                  width: textWidth,
+                  child: Text(
+                    '대여 시작',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                Text(
+                  '${data.START}',
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: textWidth,
+                  child: Text(
+                    '대여 종료',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                Text(
+                  '${data.END}',
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: textWidth,
                   child: Text(
                     '위 치',
                     style: TextStyle(fontSize: 15),

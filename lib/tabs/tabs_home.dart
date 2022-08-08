@@ -3,17 +3,25 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:bookting/providers/user_id.dart';
 //로그인 한 사람 데이터 갖고 오기 위한 프로바이더
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bookting/model/user.dart';
 import 'package:bookting/model/lend_book.dart';
+import 'package:bookting/screens/detail_home_screen.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 //나중에 로그아웃 기능에 해당 import 추가
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-String? uid = '';
+String? uid;
 
 class HomeTab extends StatelessWidget {
+  Future getImage(ImageSource imageSource) async {
+    final image = await ImagePicker().pickImage(source: imageSource);
+    // setState() {
+    //   _image = image!;
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -22,25 +30,31 @@ class HomeTab extends StatelessWidget {
         margin: EdgeInsets.only(top: statusBarHeight),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.6),
-                    BlendMode.dstATop,
+            InkWell(
+              onTap: () {
+                getImage(ImageSource.camera);
+                // Navigator.of(context).pushNamed('/camera');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6),
+                      BlendMode.dstATop,
+                    ),
+                    fit: BoxFit.cover,
+                    image: const AssetImage('assets/Home_Background.jpg'),
                   ),
-                  fit: BoxFit.cover,
-                  image: const AssetImage('assets/Home_Background.jpg'),
                 ),
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                    child: Image.asset(
+                  'assets/Camera.png',
+                  width: 150,
+                  height: 150,
+                )),
               ),
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                  child: Image.asset(
-                'assets/Camera.png',
-                width: 150,
-                height: 150,
-              )),
             ),
             Container(
               height: (MediaQuery.of(context).size.height * 0.7) - 132,
@@ -64,7 +78,7 @@ class _getLendBooks extends State<getLendBooks> {
     uid = prefs.getString('UID');
   }
 
-  Future<List<LEND_BOOK>> readUser() => FirebaseFirestore.instance
+  Future<List<LEND_BOOK>> readUser(uid) => FirebaseFirestore.instance
       .collection('lend_book')
       .where('LEND_USER', isEqualTo: uid)
       .get()
@@ -86,65 +100,73 @@ class _getLendBooks extends State<getLendBooks> {
 
     for (int i = 0; i < lend_book.length; i++) {
       BookList.add(
-        Container(
-          height: 150,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.grey.withOpacity(0.1),
-          padding:
-              EdgeInsets.fromLTRB(MEDIAWIDTH * 0.05, 1, MEDIAWIDTH * 0.05, 1),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  width: 100,
-                  height: 130,
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.network(
-                    lend_book[i].URL!,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: ((context) => DetailScreen(lend_book[i]))));
+          },
+          child: Container(
+            height: 150,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.grey.withOpacity(0.1),
+            padding:
+                EdgeInsets.fromLTRB(MEDIAWIDTH * 0.05, 1, MEDIAWIDTH * 0.05, 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
                     width: 100,
-                    height: 150,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey,
-                        child: const Center(
-                            child: Text('이미지\n없음',
-                                style: TextStyle(fontSize: 25))),
-                      );
-                    },
-                  )),
-              Container(
-                width: (MEDIAWIDTH * 0.9) - 100,
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                // color: Colors.grey.withOpacity(0.1),
-                // width: (MediaQuery.of(context).size.width * 0.9) - 100,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lend_book[i].TITLE!,
-                      style: const TextStyle(
-                          fontSize: 25, overflow: TextOverflow.ellipsis),
-                    ),
-                    Text(
-                      lend_book[i].WRITER!,
-                      style: const TextStyle(fontSize: 18),
-                      softWrap: true,
-                    ),
-                    Text(
-                      '대출일자 | ${lend_book[i].START!}',
-                      style: const TextStyle(fontSize: 15),
-                      softWrap: false,
-                    ),
-                    Text(
-                      '반납일자 | ${lend_book[i].END!}',
-                      style: const TextStyle(fontSize: 15),
-                      softWrap: false,
-                    ),
-                  ],
+                    height: 130,
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Image.network(
+                      lend_book[i].URL!,
+                      width: 100,
+                      height: 150,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey,
+                          child: const Center(
+                              child: Text('이미지\n없음',
+                                  style: TextStyle(fontSize: 25))),
+                        );
+                      },
+                    )),
+                Container(
+                  width: (MEDIAWIDTH * 0.9) - 100,
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  // color: Colors.grey.withOpacity(0.1),
+                  // width: (MediaQuery.of(context).size.width * 0.9) - 100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lend_book[i].TITLE!,
+                        style: const TextStyle(
+                            fontSize: 25, overflow: TextOverflow.ellipsis),
+                      ),
+                      Text(
+                        lend_book[i].WRITER!,
+                        style: const TextStyle(fontSize: 18),
+                        softWrap: true,
+                      ),
+                      Text(
+                        '대출일자 | ${lend_book[i].START!}',
+                        style: const TextStyle(fontSize: 15),
+                        softWrap: false,
+                      ),
+                      Text(
+                        '반납일자 | ${lend_book[i].END!}',
+                        style: const TextStyle(fontSize: 15),
+                        softWrap: false,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -179,10 +201,9 @@ class _getLendBooks extends State<getLendBooks> {
 
   @override
   Widget build(BuildContext context) {
-    getUID();
     return Scaffold(
       body: FutureBuilder<List<LEND_BOOK>>(
-        future: readUser(),
+        future: getUID().then((value) => readUser(uid)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
@@ -200,28 +221,4 @@ class _getLendBooks extends State<getLendBooks> {
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   getUID();
-  //   print(uid);
-  //   return Scaffold(
-  //     body: StreamBuilder<List<LEND_BOOK>>(
-  //       stream: readUser(),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasData) {
-  //           final users = snapshot.data!;
-  //           return SingleChildScrollView(
-  //             child: Column(
-  //               children: getList(users),
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //             ),
-  //           );
-  //         } else {
-  //           return Center(child: CircularProgressIndicator());
-  //         }
-  //       },
-  //     ),
-  //   );
-  // }
 }

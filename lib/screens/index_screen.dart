@@ -5,23 +5,16 @@ import 'package:bookting/tabs/tabs_map.dart';
 import 'package:bookting/tabs/tabs_profile.dart';
 import 'package:bookting/tabs/tabs_search.dart';
 
-import 'package:bookting/screens/detail_screen.dart';
-import 'package:bookting/model/lib_book.dart';
-
 class IndexScreen extends StatefulWidget {
   @override
   _IndexScreenState createState() => _IndexScreenState();
 }
 
-// LIB_BOOK
-
-// const data = LIB_BOOK().toJson();
-
 class _IndexScreenState extends State<IndexScreen> {
-  int _currentIndex = 2;
+  int _currentIndex = 1;
+
   final List<Widget> _tabs = [
-    // DetailScreen(data),
-    FavoriteTab(),
+    // FavoriteTab(),
     SearchTab(),
     HomeTab(),
     MapTap(),
@@ -36,16 +29,16 @@ class _IndexScreenState extends State<IndexScreen> {
         iconSize: 35,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        selectedLabelStyle: TextStyle(fontSize: 14),
+        selectedLabelStyle: const TextStyle(fontSize: 14),
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: '즐겨찾기'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: '찾기'),
+        items: const [
+          // BottomNavigationBarItem(icon: Icon(Icons.list), label: '전체'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: '검색'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: '지도'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: '프로필'),

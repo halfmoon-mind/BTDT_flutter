@@ -7,6 +7,7 @@ import '../component/background_blur.dart';
 
 String email = '';
 String password = '';
+String uid = '';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -95,9 +96,10 @@ class PasswordInput extends StatelessWidget {
 class LoginButton extends StatelessWidget {
   Future setLogin(UID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLogin', true);
-    prefs.setString('UID', UID);
+    await prefs.setBool('isLogin', true);
+    await prefs.setString('UID', UID);
     print('[*] 로그인 상태 : ' + prefs.getBool('isLogin').toString());
+    uid = UID;
   }
 
   @override
@@ -111,9 +113,10 @@ class LoginButton extends StatelessWidget {
             await FirebaseAuth.instance
                 .signInWithEmailAndPassword(email: email, password: password);
             final User user = FirebaseAuth.instance.currentUser!;
-            final UID = user.uid;
-            await setLogin(UID);
-            Navigator.of(context).pushReplacementNamed('/index');
+            await setLogin(user.uid).then((value) {
+              Navigator.of(context).pushReplacementNamed('/index');
+            });
+            // Navigator.of(context).pushReplacementNamed('/index');
           } on FirebaseAuthException catch (e) {
             showDialog(
               context: context,

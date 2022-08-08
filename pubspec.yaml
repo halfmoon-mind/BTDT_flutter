@@ -29,6 +29,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  camera:
+  path_provider:
+  path:
+  image_picker:
+
   shared_preferences: ^2.0.6
   provider: ^5.0.0
   sqflite: ^2.0.0+3

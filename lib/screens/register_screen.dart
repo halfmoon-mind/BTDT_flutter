@@ -18,57 +18,56 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Container(
           padding: EdgeInsets.only(top: statusBarHeight),
           width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           decoration: background(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(padding: EdgeInsets.all(15)),
-              Text(
+              const Padding(padding: EdgeInsets.all(15)),
+              const Text(
                 '회원가입',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
+              const Padding(padding: EdgeInsets.all(15)),
               Opacity(
                 opacity: 0.8,
                 child: Container(
                   color: Colors.white,
-                  height: MediaQuery.of(context).size.height * 1,
                   width: MediaQuery.of(context).size.width * 0.8,
-                  child: Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        EmailInput(),
-                        NameInput(),
-                        IdInput(),
-                        PhoneInput(),
-                        BankLocInput(),
-                        BankInput(),
-                        PasswordInput(),
-                        PasswordCheckInput(),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Divider(thickness: 1),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              child: RegisterButton(),
-                              width: MediaQuery.of(context).size.width * 0.4,
-                            ),
-                            SizedBox(
-                              child: Cancel(),
-                              width: MediaQuery.of(context).size.width * 0.4,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      EmailInput(),
+                      NameInput(),
+                      IdInput(),
+                      PhoneInput(),
+                      BankLocInput(),
+                      BankInput(),
+                      PasswordInput(),
+                      PasswordCheckInput(),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            child: RegisterButton(),
+                            width: MediaQuery.of(context).size.width * 0.4,
+                          ),
+                          SizedBox(
+                            child: Cancel(),
+                            width: MediaQuery.of(context).size.width * 0.4,
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -90,9 +89,10 @@ class EmailInput extends StatelessWidget {
           email = value.toString().trim();
         },
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '이메일',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -108,9 +108,10 @@ class NameInput extends StatelessWidget {
         onChanged: (value) {
           name = value;
         },
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '이름',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -127,9 +128,10 @@ class IdInput extends StatelessWidget {
           id = value;
         },
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '학번 입력',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -180,9 +182,10 @@ class BankInput extends StatelessWidget {
           bank_data = value;
         },
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '계좌 입력',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -198,9 +201,10 @@ class PhoneInput extends StatelessWidget {
         onChanged: (value) {
           phone = value;
         },
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '전화번호',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -217,9 +221,10 @@ class PasswordInput extends StatelessWidget {
           password = value;
         },
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '비밀번호',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -236,9 +241,10 @@ class PasswordCheckInput extends StatelessWidget {
           password_check = value;
         },
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: '비밀번호 확인',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54)),
         ),
       ),
     );
@@ -272,7 +278,7 @@ class RegisterButton extends StatelessWidget {
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(
                         "비밀번호가 동일하지 않거나, 비어있는 입력칸이 있습니다!",
                       ),
@@ -309,7 +315,7 @@ class RegisterButton extends StatelessWidget {
                   'bank_data': bank_data,
                   'name': name,
                   'phone': phone,
-                  'lend': [],
+                  // 'lend': [],
                 }));
             // userCredential.user!.uid
             Navigator.of(context).pop();

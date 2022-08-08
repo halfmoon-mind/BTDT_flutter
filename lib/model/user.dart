@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class USER {
   late String? uid;
   late String? email;
   late String? id;
@@ -10,7 +10,7 @@ class User {
   late String? phone;
   late List? lend;
 
-  User({
+  USER({
     this.uid,
     this.email,
     this.id,
@@ -34,7 +34,7 @@ class User {
     };
   }
 
-  static User fromJson(Map<String, dynamic> json) => User(
+  static USER fromJson(Map<String, dynamic> json) => USER(
         uid: json['uid'],
         email: json['email'],
         id: json['id'],
